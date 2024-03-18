@@ -11,7 +11,9 @@ const App = () => {
     bad: 0,
   });
 
-  const updateFeedback = (feedbackType) => {
+  // console.log(Object.keys(feedbacks));
+
+  const updateFeedback = () => {
     setValues({
       ...feedbacks,
       feedbackType: feedbacks.feedbackType + 1,
@@ -42,12 +44,7 @@ const App = () => {
   return (
     <>
       <Description />
-      <Options
-        updateFeedback={updateFeedback}
-        // updateGoodFeedback={updateGoodFeedback}
-        // updateNeutalFeedback={updateNeutalFeedback}
-        // updateBadFeedback={updateBadFeedback}
-      />
+      <Options updateFeedback={updateFeedback} />
       <Feedback feedbacks={feedbacks} />
     </>
   );
