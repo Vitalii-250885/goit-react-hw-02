@@ -1,31 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Description from "../description/Description";
 import Feedback from "../feedback/Feedback";
 import Options from "../options/Options";
 import Notification from "../notification/Notification";
 
-const startData = {
-  good: 0,
-  neutral: 0,
-  bad: 0,
-};
-
-if (!localStorage.getItem("feedbacks")) {
-  localStorage.setItem("feedbacks", JSON.stringify(startData));
-}
-
-const data = JSON.parse(localStorage.getItem("feedbacks"));
-
 const App = () => {
-  const [feedbacks, setValues] = useState(data);
+  const [feedbacks, setValues] = useState(() => {
+    const feedbackStart = window.localStorage.getItem("feedbacks");
+
+    if (feedbackStart !== null) {
+      return JSON.parse(feedbackStart);
+    }
+    return {
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    };
+  });
+
+  const feedbackJson = JSON.stringify(feedbacks);
+
+  useEffect(() => {
+    localStorage.setItem("feedbacks", feedbackJson);
+  }, [feedbackJson]);
 
   const totalFeedback = feedbacks.good + feedbacks.neutral + feedbacks.bad;
   const positiveFeedback = Math.round(
     ((feedbacks.good + feedbacks.neutral) / totalFeedback) * 100
   );
-
-  localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
 
   const updateFeedback = (feedbackType) => {
     setValues({
